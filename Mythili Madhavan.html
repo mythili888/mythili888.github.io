@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mythili Madhavan</title>
+<meta name="description" content="Mythili Madhavan: final-year Biomedical Engineering student working across modelling, signal processing and embedded hardware.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: white frame, one full-width hero with a live simulation in place of a photo, a moving skills strip, then a black section of staggered project tiles. */
+:root {
+  color-scheme: light;
+  --paper: #ffffff;
+  --ink: #141414;
+  --muted: #5f5f5f;
+  --night: #131313;
+  --night-text: #f3f1ec;
+  --night-muted: #b5b2aa;
+  --line: #e4e2dc;
+  --coral: #e8604f;
+  --display: "Marcellus", Georgia, serif;
+  --body: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --frame: clamp(10px, 2vw, 28px);
+  --ease: cubic-bezier(.2,.7,.2,1);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; background: var(--paper); }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 1.0625rem; line-height: 1.55; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; text-wrap: balance; }
+
+/* Navigation */
+.nav { position: sticky; top: 0; z-index: 10; background: var(--paper); display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px calc(var(--frame) + 8px); transition: box-shadow .3s; }
+.nav.stuck { box-shadow: 0 1px 0 var(--line); }
+.brand { font-family: var(--display); font-size: 1.125rem; text-decoration: none; white-space: nowrap; }
+.nav ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: clamp(12px, 2.4vw, 30px); font-size: .9375rem; }
+.nav li a { text-decoration: none; position: relative; padding: 4px 0; display: inline-block; }
+.nav li a:not(.in-icon)::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+.nav li a:hover::after, .nav li a.active::after { transform: scaleX(1); }
+.in-icon { display: inline-flex; transition: transform .25s var(--ease); }
+.in-icon:hover { transform: translateY(-2px); }
+.in-icon svg { width: 19px; height: 19px; fill: currentColor; display: block; }
+
+/* Hero */
+.hero { position: relative; margin: 0 var(--frame); height: clamp(520px, 74vh, 760px); overflow: hidden; background: #0a0414; color: #fff; cursor: crosshair; }
+.hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; animation: settle 2.4s var(--ease) both; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(10,4,20,.72) 0%, rgba(10,4,20,.25) 52%, rgba(10,4,20,0) 75%); pointer-events: none; }
+@keyframes settle { from { transform: scale(1.08); } to { transform: scale(1); } }
+.hero-top { position: absolute; z-index: 2; left: clamp(20px, 4vw, 56px); top: clamp(26px, 5vw, 60px); pointer-events: none; }
+h1 { font-size: clamp(2.5rem, 5.6vw, 5rem); line-height: 1.12; }
+h1 span { display: block; overflow: hidden; }
+h1 span b { display: block; font-weight: 400; animation: rise 1s var(--ease) both; }
+h1 span:nth-child(2) b { animation-delay: .12s; }
+h1 span:nth-child(3) b { animation-delay: .24s; }
+@keyframes rise { from { transform: translateY(105%); } to { transform: translateY(0); } }
+.hero-note { position: absolute; z-index: 2; left: clamp(20px, 4vw, 56px); bottom: clamp(20px, 3vw, 36px); font-size: .875rem; color: #d9d4e2; max-width: 30ch; pointer-events: none; }
+.hero-side { position: absolute; z-index: 2; right: clamp(20px, 4vw, 56px); bottom: clamp(20px, 3vw, 36px); width: min(370px, calc(100% - 40px)); display: grid; gap: 16px; justify-items: start; cursor: default; animation: fadein 1s .5s var(--ease) both; }
+@keyframes fadein { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.btn { display: inline-block; background: #fff; color: var(--ink); text-decoration: none; padding: 11px 22px; font-weight: 500; font-size: .9688rem; transition: background .25s, color .25s, transform .25s var(--ease); }
+.btn:hover { background: var(--coral); color: #fff; transform: translateY(-2px); }
+
+/* Skills strip */
+.strip { overflow: hidden; padding: 16px 0; font-family: var(--display); font-size: 1.125rem; }
+.track { display: flex; width: max-content; animation: slide 42s linear infinite; }
+.strip:hover .track { animation-play-state: paused; }
+.track ul { list-style: none; margin: 0; padding: 0; display: flex; }
+.track li { display: flex; align-items: center; gap: 34px; padding-left: 34px; white-space: nowrap; }
+.track li::after { content: ""; width: 9px; height: 9px; background: var(--coral); transform: rotate(45deg); }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* Projects */
+.work { margin: 0 var(--frame); background: var(--night); color: var(--night-text); padding: clamp(46px, 7vw, 96px) clamp(20px, 5vw, 76px); }
+.lead { font-family: var(--display); font-size: clamp(1.6rem, 3vw, 2.5rem); line-height: 1.24; max-width: 26em; }
+.tiles { margin-top: clamp(36px, 5vw, 70px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(36px, 5vw, 64px) clamp(24px, 6vw, 92px); }
+.tile:nth-child(even) { transform: translateY(0); margin-top: clamp(0px, 9vw, 130px); }
+.art { aspect-ratio: 5 / 4; overflow: hidden; position: relative; }
+.art canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; transition: transform .8s var(--ease); }
+.tile:hover .art canvas { transform: scale(1.05); }
+.art.fyp { background: #240a2e; } .art.spoon { background: var(--coral); } .art.eeg { background: #cfccc4; } .art.jump { background: #2438c7; } .art.gait { background: #dfc9a8; }
+.tile h3 { font-size: clamp(1.25rem, 1.9vw, 1.5rem); line-height: 1.22; margin-top: 18px; }
+.tile p { color: var(--night-muted); margin-top: 8px; max-width: 58ch; }
+.tile .result { color: var(--night-text); font-weight: 500; }
+
+/* Light sections */
+.band { padding: clamp(52px, 7vw, 100px) calc(var(--frame) + clamp(20px, 5vw, 76px)); }
+.band h2 { font-size: clamp(1.9rem, 3.4vw, 2.9rem); line-height: 1.15; }
+.figures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding-bottom: clamp(40px, 5vw, 70px); }
+.figures div { display: grid; gap: 4px; align-content: start; }
+.figures strong { font-family: var(--display); font-weight: 400; font-size: clamp(2.4rem, 5vw, 4.25rem); line-height: 1; font-variant-numeric: tabular-nums; }
+.figures span { color: var(--muted); font-size: .9688rem; max-width: 24ch; }
+.jobs { margin-top: 26px; display: grid; }
+.job { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 8px clamp(24px, 5vw, 76px); padding: 24px 0; border-top: 1px solid var(--line); position: relative; }
+.job::before { content: ""; position: absolute; top: -1px; left: 0; height: 1px; width: 100%; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .6s var(--ease); }
+.job:hover::before { transform: scaleX(1); }
+.job h3 { font-size: 1.375rem; line-height: 1.22; }
+.job .org { color: var(--muted); margin-top: 3px; }
+.job ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; max-width: 62ch; }
+
+.skills-band { background: #f4f2ed; margin: 0 var(--frame); padding: clamp(46px, 7vw, 90px) clamp(20px, 5vw, 76px); }
+.groups { margin-top: 30px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px clamp(24px, 4vw, 56px); }
+.groups h3 { font-size: 1.3125rem; }
+.groups p { color: var(--muted); margin-top: 6px; }
+
+.close { margin: var(--frame); background: var(--night); color: var(--night-text); padding: clamp(50px, 8vw, 110px) clamp(20px, 5vw, 76px); display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 26px; }
+.close h2 { font-size: clamp(2.2rem, 5vw, 4.25rem); line-height: 1.08; max-width: 13em; }
+.small { padding: 0 calc(var(--frame) + 8px) 18px; color: var(--muted); font-size: .875rem; }
+
+/* Scroll reveal: starts visible, then settles into place */
+.rv { transition: transform .9s var(--ease), opacity .9s var(--ease); }
+.rv.wait { transform: translateY(34px); opacity: .55; }
+.tile.rv.wait { transform: translateY(44px); }
+
+@media (max-width: 760px) {
+  .nav ul li.opt { display: none; }
+  .tiles, .job, .groups { grid-template-columns: minmax(0, 1fr); }
+  .tile:nth-child(even) { margin-top: 0; }
+  .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero { height: 620px; }
+  .hero-note { display: none; }
+  .hero::after { background: linear-gradient(180deg, rgba(10,4,20,.55), rgba(10,4,20,.1) 45%, rgba(10,4,20,.7)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .rv.wait { transform: none; opacity: 1; }
+  .track { flex-wrap: wrap; width: auto; }
+  .track ul[aria-hidden] { display: none; }
+  .track ul { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+<nav class="nav" id="nav" aria-label="Main">
+  <a class="brand" href="#top">Mythili Madhavan</a>
+  <ul>
+    <li class="opt"><a href="#top" class="active">Home</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a class="in-icon" href="https://www.linkedin.com/in/mythili-m-852739245" aria-label="LinkedIn profile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4V21H3zM9.5 9.75h3.83v1.54h.05c.53-1 1.84-2.05 3.78-2.05 4.04 0 4.79 2.66 4.79 6.12V21h-4v-4.98c0-1.19-.02-2.72-1.66-2.72-1.66 0-1.91 1.3-1.91 2.63V21h-4z"/></svg></a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="sim" role="img" aria-label="A live simulation of laser light scattering through tissue."></canvas>
+  <div class="hero-top">
+    <h1><span><b>Modelling the body</b></span><span><b>with maths, signals</b></span><span><b>and machine learning</b></span></h1>
+  </div>
+  <p class="hero-note">Live Monte Carlo simulation of laser light scattering in tissue. Click to move the beam.</p>
+  <div class="hero-side" id="side">
+    <p>Final-year Biomedical Engineering student at Aston University, predicted a First and graduating in 2027. I work across computational modelling, signal processing and embedded hardware.</p>
+    <a class="btn" href="https://www.linkedin.com/in/mythili-m-852739245">Connect on LinkedIn</a>
+  </div>
+</header>
+
+<div class="strip" aria-label="Areas of skill">
+  <div class="track">
+    <ul><li>Computational Modelling</li><li>Monte Carlo Simulation</li><li>Signal Processing</li><li>Embedded Systems</li><li>Machine Learning</li><li>Biomechanics</li><li>Medical Device Development</li><li>Risk Management</li></ul>
+    <ul aria-hidden="true"><li>Computational Modelling</li><li>Monte Carlo Simulation</li><li>Signal Processing</li><li>Embedded Systems</li><li>Machine Learning</li><li>Biomechanics</li><li>Medical Device Development</li><li>Risk Management</li></ul>
+  </div>
+</div>
+
+<section class="work" id="work">
+  <h2 class="lead rv">Selected projects, from simulating light in tissue to building hardware that responds to the human body.</h2>
+  <div class="tiles">
+    <article class="tile rv">
+      <div class="art fyp"><canvas data-art="fyp" aria-hidden="true"></canvas></div>
+      <h3>AI-Enhanced Temperature Mapping for Laser-Based Therapies</h3>
+      <p>Final-year project, supervised by Professor Igor Meglinski, in collaboration with Aston’s ARCHA centre. A machine-learning pipeline that converts Monte Carlo laser fluence fields into spatiotemporal tissue temperature maps with uncertainty estimates, based on the Pennes bioheat equation.</p>
+    </article>
+    <article class="tile rv">
+      <div class="art spoon"><canvas data-art="spoon" aria-hidden="true"></canvas></div>
+      <h3>Self-Stabilising Spoon for Parkinsonian Tremor</h3>
+      <p>Project manager and electronics lead. Closed-loop control on an ESP32 with real-time IMU sensing, FreeRTOS firmware and a custom KiCad PCB. I also authored the technical file, including an ISO 14971 risk framework.</p>
+      <p class="result">Reduced tremor by about 70% across a ±40° range.</p>
+    </article>
+    <article class="tile rv">
+      <div class="art eeg"><canvas data-art="eeg" aria-hidden="true"></canvas></div>
+      <h3>EEG and SSVEP Signal Processing</h3>
+      <p>A MATLAB pipeline from raw EEG to frequency analysis, using Butterworth filtering and FFT to isolate the brain’s response to flickering visual stimuli.</p>
+    </article>
+    <article class="tile rv">
+      <div class="art jump"><canvas data-art="jump" aria-hidden="true"></canvas></div>
+      <h3>Vertical Jump Biomechanics</h3>
+      <p>Vicon motion capture and AMTI force plates, benchmarking jump-height estimation methods against a Dempster gold-standard model.</p>
+      <p class="result">Flight-time method accurate to an RMSE of about 1.7 cm.</p>
+    </article>
+    <article class="tile rv">
+      <div class="art gait"><canvas data-art="gait" aria-hidden="true"></canvas></div>
+      <h3>Transtibial Prosthesis Design</h3>
+      <p>Current group project. 2D sagittal gait analysis of Vicon and force-plate data in MATLAB, informing the design development of a prosthesis modelled in SolidWorks.</p>
+    </article>
+  </div>
+</section>
+
+<section class="band" id="experience">
+  <div class="figures rv" id="figures">
+    <div><strong data-count="70" data-pre="~" data-suf="%">~70%</strong><span>tremor reduction from a device I led the electronics for</span></div>
+    <div><strong data-count="4" data-pre="Top " data-suf="%">Top 4%</strong><span>national finalist, Engineers Without Borders</span></div>
+    <div><strong data-count="20" data-suf="+">20+</strong><span>members led as Director of Enactus Aston</span></div>
+    <div><strong data-count="20" data-suf="+">20+</strong><span>adult numeracy outreach events delivered</span></div>
+  </div>
+  <h2 class="rv">Experience</h2>
+  <div class="jobs">
+    <article class="job rv">
+      <div><h3>Assessment Intern</h3><p class="org">Pearson Global Qualifications, London. June to August 2026</p></div>
+      <ul><li>Supported awarding preparation, validity checks, quality assurance and data audit checks for Ofqual-regulated qualifications.</li><li>Prepared Angoff training materials and managed examiner attendance and multi-rate payment calculations.</li><li>Contributed to cognition and learning work with the Pearson Labs innovation team.</li><li>Started the Intern Edit newsletter and wrote its article on AI, cognition and the future of assessment.</li></ul>
+    </article>
+    <article class="job rv">
+      <div><h3>Director</h3><p class="org">Enactus Aston</p></div>
+      <ul><li>Led a cross-functional organisation of more than 20 members to a top-20 competition finish.</li><li>Secured £1,150 in funding and worked with advisors from Sodexo and SAP.</li><li>Organised a corporate book launch for over 70 guests, recognised by the Vice-Chancellor.</li></ul>
+    </article>
+    <article class="job rv">
+      <div><h3>PAL Leader</h3><p class="org">Aston University</p></div>
+      <ul><li>Design and teach weekly mathematics sessions for first-year engineering students.</li></ul>
+    </article>
+    <article class="job rv">
+      <div><h3>Practice Educator</h3><p class="org">Multiply Project, West Midlands Combined Authority</p></div>
+      <ul><li>Taught numeracy and digital skills to adults on a government-funded programme, across more than 20 outreach events.</li></ul>
+    </article>
+    <article class="job rv">
+      <div><h3>BEng Biomedical Engineering</h3><p class="org">Aston University. Graduating 2027</p></div>
+      <ul><li>Predicted First Class.</li><li>IMechE member and BioMedEng UK Association member.</li><li>McKinsey &amp; Company Forward Programme.</li></ul>
+    </article>
+  </div>
+</section>
+
+<section class="skills-band" id="skills">
+  <h2 class="rv" style="font-size:clamp(1.9rem,3.4vw,2.9rem);line-height:1.15">Skills</h2>
+  <div class="groups">
+    <div class="rv"><h3>Modelling and data</h3><p>Python (pandas, NumPy, matplotlib), MATLAB, Monte Carlo simulation, statistical analysis, machine learning, ANSYS.</p></div>
+    <div class="rv"><h3>Signal processing</h3><p>EEG and SSVEP analysis, digital filtering, FFT, pulse oximetry, data visualisation.</p></div>
+    <div class="rv"><h3>Embedded hardware</h3><p>ESP32, FreeRTOS, Arduino C++, IMU sensors, KiCad PCB design, LabVIEW, closed-loop control.</p></div>
+    <div class="rv"><h3>Mechanical and biomechanics</h3><p>SolidWorks, Vicon motion capture, AMTI force plates, gait and jump analysis.</p></div>
+    <div class="rv"><h3>Quality and risk</h3><p>ISO 14971 risk management, technical documentation, quality assurance in regulated assessment.</p></div>
+    <div class="rv"><h3>Leadership and teaching</h3><p>Project management, stakeholder engagement, leading teams of 20+, teaching mathematics to varied audiences.</p></div>
+  </div>
+</section>
+
+<section class="close" id="contact">
+  <h2 class="rv">Let’s talk about modelling, data and engineering work.</h2>
+  <a class="btn" href="https://www.linkedin.com/in/mythili-m-852739245">Connect on LinkedIn</a>
+</section>
+<p class="small">Mythili Madhavan, West Midlands, UK</p>
+
+<script>
+(function () {
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Hero simulation */
+  var hero = document.querySelector('.hero'), canvas = document.getElementById('sim'), ctx = canvas.getContext('2d');
+  var H = 130, CELL = 0.06, MUS = 3, MUA = 0.12, G = 0.8, MAXN = 150000, MUT = MUS + MUA, ALBEDO = MUS / MUT;
+  var W, grid, img, count = 0, peak = 0, raf = null, beam = innerWidth < 760 ? .5 : .68;
+  var stops = [[10,4,20],[58,12,92],[140,28,110],[214,62,78],[250,142,36],[252,226,130]], lut = new Uint8ClampedArray(768);
+  for (var i = 0; i < 256; i++) { var t = i / 255 * 5, a = Math.min(Math.floor(t), 4), f = t - a; for (var c = 0; c < 3; c++) lut[i * 3 + c] = stops[a][c] + (stops[a + 1][c] - stops[a][c]) * f; }
+  function cosHG() { var s = (1 - G * G) / (1 - G + 2 * G * Math.random()); return Math.max(-1, Math.min(1, (1 + G * G - s * s) / (2 * G))); }
+  function launch(n) {
+    var x0 = W * CELL * beam, wMM = W * CELL, hMM = H * CELL;
+    for (var p = 0; p < n; p++) {
+      var x = x0 + (Math.random() - .5) * .18, z = 0, ang = Math.PI / 2, w = 1;
+      while (w > .01) {
+        var s = -Math.log(1 - Math.random()) / MUT;
+        x += Math.cos(ang) * s; z += Math.sin(ang) * s;
+        if (z < 0 || z >= hMM || x < 0 || x >= wMM) break;
+        var k = Math.floor(z / CELL) * W + Math.floor(x / CELL), d = w * (1 - ALBEDO);
+        grid[k] += d; if (grid[k] > peak) peak = grid[k]; w -= d;
+        var turn = Math.acos(cosHG()); ang += Math.random() < .5 ? turn : -turn;
+      }
+    }
+    count += n;
+  }
+  function paint() {
+    var data = img.data, sc = 300 / (peak || 1), nm = 255 / Math.log(301);
+    for (var i = 0; i < grid.length; i++) { var v = Math.min(255, Math.log(1 + grid[i] * sc) * nm) | 0, j = i * 4; data[j] = lut[v * 3]; data[j + 1] = lut[v * 3 + 1]; data[j + 2] = lut[v * 3 + 2]; data[j + 3] = 255; }
+    ctx.putImageData(img, 0, 0);
+  }
+  function loop() { launch(350); paint(); raf = count < MAXN ? requestAnimationFrame(loop) : null; }
+  function reset() { grid.fill(0); count = 0; peak = 0; launch(still ? 60000 : 12000); paint(); if (!still && raf === null) raf = requestAnimationFrame(loop); }
+  function setup() { var r = hero.getBoundingClientRect(); W = Math.max(100, Math.round(H * r.width / r.height)); canvas.width = W; canvas.height = H; grid = new Float32Array(W * H); img = ctx.createImageData(W, H); reset(); }
+  hero.addEventListener('click', function (e) {
+    if (e.target.closest('#side')) return;
+    var r = hero.getBoundingClientRect(); beam = Math.max(.03, Math.min(.97, (e.clientX - r.left) / r.width)); reset();
+  });
+  var lastW = innerWidth; addEventListener('resize', function () { if (Math.abs(innerWidth - lastW) > 40) { lastW = innerWidth; setup(); fit(); } });
+  setup();
+
+  /* Project artwork: illustrative motion, no measured data */
+  var arts = [].slice.call(document.querySelectorAll('canvas[data-art]')).map(function (el) { return { el: el, ctx: el.getContext('2d'), kind: el.dataset.art, on: true, w: 0, h: 0 }; });
+  function fit() { arts.forEach(function (a) { var r = a.el.parentNode.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); a.el.width = r.width * d; a.el.height = r.height * d; a.ctx.setTransform(d, 0, 0, d, 0, 0); a.w = r.width; a.h = r.height; }); }
+  var draw = {
+    fyp: function (c, w, h, t) {
+      var cols = ['#3a0c5c','#8c1c6e','#d63e4e','#fa8e24','#fce282'], x = w * (.5 + .1 * Math.sin(t * .5)), y = h * .22;
+      for (var i = 0; i < 5; i++) { c.fillStyle = cols[i]; c.beginPath(); var k = (5 - i) / 5, b = 1 + .025 * Math.sin(t * 1.4 - i * .7); c.ellipse(x, y, w * .62 * k * k * b, h * .95 * k * k * b, 0, 0, 7); c.fill(); }
+    },
+    spoon: function (c, w, h, t) {
+      c.lineWidth = 2.6; c.strokeStyle = '#2b0d0a'; c.beginPath();
+      for (var x = 0; x <= w; x += 2) { var u = x / w, env = 1 - .85 / (1 + Math.exp(-(u - .5) * 22)), y = h * .5 + h * .3 * env * Math.sin(u * 46 - t * 5) * (.82 + .18 * Math.sin(u * 13 + t)); x ? c.lineTo(x, y) : c.moveTo(x, y); } c.stroke();
+    },
+    eeg: function (c, w, h, t) {
+      var n = 46, bw = w * .84 / n, peaks = [11, 22, 33];
+      for (var i = 0; i < n; i++) { var v = .05 + .05 * Math.abs(Math.sin(i * 2.7 + t * 1.6)); peaks.forEach(function (p, q) { v += (.72 / (q + 1)) * Math.exp(-Math.pow(i - p, 2) / 1.1) * (.86 + .14 * Math.sin(t * 2.4)); }); c.fillStyle = '#26262a'; c.fillRect(w * .08 + i * bw, h * .86 - v * h * .78, bw * .62, v * h * .78); }
+    },
+    jump: function (c, w, h, t) {
+      var g = h * .84; c.strokeStyle = 'rgba(255,255,255,.75)'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(w * .1, g); c.lineTo(w * .9, g); c.stroke();
+      var ph = (t * .42) % 1, n = 26;
+      for (var i = 0; i < n; i++) { var u = i / (n - 1), dist = Math.abs(u - ph), y = g - 16 - 4 * u * (1 - u) * h * .62, on = u <= ph; c.fillStyle = on ? '#fff' : 'rgba(255,255,255,.28)'; c.beginPath(); c.arc(w * .5 + (u - .5) * w * .28, y, dist < .03 ? 9 : 3.2, 0, 7); c.fill(); }
+    },
+    gait: function (c, w, h, t) {
+      var hip = [w * .5, h * .24 + 5 * Math.sin(t * 5.2)], L = h * .31; c.lineCap = 'round'; c.lineJoin = 'round';
+      [[0, '#2a2118'], [Math.PI, '#9a7e57']].forEach(function (p) {
+        var th = .42 * Math.sin(t * 2.6 + p[0]), kn = .2 + .55 * Math.max(0, Math.sin(t * 2.6 + p[0] + 1.3));
+        var k = [hip[0] + Math.sin(th) * L, hip[1] + Math.cos(th) * L], a = [k[0] + Math.sin(th - kn) * L, k[1] + Math.cos(th - kn) * L];
+        c.strokeStyle = p[1]; c.lineWidth = 7; c.beginPath(); c.moveTo(hip[0], hip[1]); c.lineTo(k[0], k[1]); c.lineTo(a[0], a[1]); c.lineTo(a[0] + 24, a[1] + 4); c.stroke();
+        c.fillStyle = '#fff'; [k, a].forEach(function (q) { c.beginPath(); c.arc(q[0], q[1], 4.5, 0, 7); c.fill(); });
+      });
+      c.fillStyle = '#fff'; c.beginPath(); c.arc(hip[0], hip[1], 6, 0, 7); c.fill();
+    }
+  };
+  function renderArt(a, t) { a.ctx.clearRect(0, 0, a.w, a.h); draw[a.kind](a.ctx, a.w, a.h, t); }
+  fit();
+  arts.forEach(function (a) { renderArt(a, 1.2); });
+  if (!still) {
+    var artIO = new IntersectionObserver(function (es) { es.forEach(function (e) { arts.forEach(function (a) { if (a.el === e.target) a.on = e.isIntersecting; }); }); });
+    arts.forEach(function (a) { artIO.observe(a.el); });
+    (function tick(ms) { arts.forEach(function (a) { if (a.on) renderArt(a, ms / 1000); }); requestAnimationFrame(tick); })(0);
+  }
+
+  /* Scroll reveal, only for elements below the first screen */
+  if (!still && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.remove('wait'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.rv').forEach(function (el) { if (el.getBoundingClientRect().top > innerHeight * .92) { el.classList.add('wait'); io.observe(el); } });
+    var figs = new IntersectionObserver(function (es, ob) {
+      if (!es[0].isIntersecting) return; ob.disconnect();
+      document.querySelectorAll('[data-count]').forEach(function (el) {
+        var to = +el.dataset.count, pre = el.dataset.pre || '', suf = el.dataset.suf || '', st = performance.now();
+        (function step(n) { var p = Math.min(1, (n - st) / 1300), e = 1 - Math.pow(1 - p, 3); el.textContent = pre + Math.round(to * e) + suf; if (p < 1) requestAnimationFrame(step); })(st);
+      });
+    }, { threshold: .4 });
+    figs.observe(document.getElementById('figures'));
+  }
+
+  /* Navigation state */
+  var nav = document.getElementById('nav'), links = [].slice.call(document.querySelectorAll('.nav li a[href^="#"]'));
+  addEventListener('scroll', function () { nav.classList.toggle('stuck', scrollY > 8); }, { passive: true });
+  if ('IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) links.forEach(function (l) { l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id); }); }); }, { rootMargin: '-40% 0px -55% 0px' });
+    ['top', 'work', 'experience', 'skills'].forEach(function (id) { spy.observe(document.getElementById(id)); });
+  }
+})();
+</script>
+</body>
+</html>
